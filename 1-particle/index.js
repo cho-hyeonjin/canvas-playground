@@ -45,9 +45,11 @@ class Particle {
     this.y = y;
     this.radius = radius;
     this.vy = vy;
+    this.acc = 1.025; // 중력 가속도를 표현하기 위한 변수! (변수명을 acceleration, egravity, friction 등으로 지음(friction도 사용되는 이유: 1보다 작은 값을 곱하면 느려지기 때문))
   }
   // 각각의 particle들의 constructor에서 초기화된 값을 변경시켜주는 메서드
   update() {
+    this.vy *= this.acc;
     this.y += this.vy;
   }
   draw() {
