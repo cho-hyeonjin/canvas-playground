@@ -40,15 +40,20 @@ ctx.scale(dpr, dpr);
 /** 도형 움직이기 - 애니메이션 (using RequestAnimaition을 이용하여 매 프레임마다 우리가 만든 도형의 위치가 변하는 함수 호출하기)  */
 /** Particle 클래스 정의 - 여러 개의 Particle을 만들 수 있도록 */
 class Particle {
-  constructor(x, y, radius) {
+  constructor(x, y, radius, vy) {
     this.x = x;
     this.y = y;
     this.radius = radius;
+    this.vy = vy;
+  }
+  // 각각의 particle들의 constructor에서 초기화된 값을 변경시켜주는 메서드
+  update() {
+    this.y += this.vy;
   }
   draw() {
     ctx.beginPath();
     ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 180 * 360);
-    ctx.fillStyle = "#0b6623";
+    ctx.fillStyle = "orange";
     ctx.fill();
     ctx.closePath();
   }
@@ -58,6 +63,23 @@ const x = 100;
 const y = 100;
 const radius = 50;
 const particle = new Particle(x, y, radius);
+
+/** 반복문으로 Particle 인스턴스 여러개 생성 */
+const TOTAL = 20;
+const randomNumBetween = (min, max) => {
+  return Math.random() * (max - min + 1) + min;
+};
+
+let particles = [];
+
+for (let i = 0; i < TOTAL; i++) {
+  const x = randomNumBetween(0, canvasWidth);
+  const y = randomNumBetween(0, canvasHeight);
+  const radius = randomNumBetween(50, 100);
+  const vy = randomNumBetween(1, 5); // 공의 떨어지는 속도가 다 다르게 하고 싶음 → 기존에 일괄적으로 ++1이던 y값을 ++(1~5 사이의)랜덤숫자로 설정하기 위한 랜덤 y값을 담는 변수
+  const particle = new Particle(x, y, radius, vy);
+  particles.push(particle);
+}
 
 let interval = 1000 / 60; // 목표 interval 시간 설정 → 1s === 1000ms, 60fps === 60 frame/s
 let now, delta;
@@ -73,11 +95,25 @@ function animate() {
 
   ctx.clearRect(0, 0, canvasWidth, canvasHeight); // 이전 도형이 지워지고
 
-  // particle.y를 1씩 증가시켜서 다시 그리기.
-  particle.y += 1;
-  particle.draw();
+  // // particle.y를 1씩 증가시켜서 다시 그리기.
+  // particle.y += 1;
+  // particle.draw();
 
-  then = now - (delta % interval);
+  // then = now - (delta % interval);
+
+  /** 반복문으로 생성한 particle들 그리기 */
+  particles.forEach((particle) => {
+    particle.update();
+    particle.draw();
+
+    // 원이 화면 아래로 사라졌을 때 하늘에서 다시 생성되게
+    if (particle.y - particle.radius > canvasHeight) {
+      particle.y = -particle.radius;
+      particle.x = randomNumBetween(0, canvasWidth);
+      particle.radius = randomNumBetween(50, 100);
+      particle.vy = randomNumBetween(1, 5);
+    }
+  });
 }
 
 /** 애니메이션 함수 실행 */
