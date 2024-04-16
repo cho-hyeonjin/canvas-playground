@@ -9,17 +9,36 @@ const ctx = canvas.getContext("2d");
 const dpr = window.devicePixelRatio;
 
 // 💡 ∴ canvas 작업을 할 때에는 stylesheet의 canavas property의 size 속성값과 canvas의 size를 동일하게 일치시켜주도록 하자!
-const canvasWidth = innerWidth;
-const canvasHeight = innerHeight;
+let canvasWidth;
+let canvasHeight;
+let particles;
 
-/** style(css)로 canvas 사이즈 변경하기 */
-canvas.style.width = canvasWidth + "px";
-canvas.style.height = canvasHeight + "px";
+function init() {
+  canvasWidth = innerWidth;
+  canvasHeight = innerHeight;
 
-/** canvas의 자체 속성 canvas.width와 canvas.heitght로 canvas 사이즈 변경하기 */
-canvas.width = canvasWidth * dpr;
-canvas.height = canvasHeight * dpr;
-ctx.scale(dpr, dpr);
+  /** style(css)로 canvas 사이즈 변경하기 */
+  canvas.style.width = canvasWidth + "px";
+  canvas.style.height = canvasHeight + "px";
+
+  /** canvas의 자체 속성 canvas.width와 canvas.heitght로 canvas 사이즈 변경하기 */
+  canvas.width = canvasWidth * dpr;
+  canvas.height = canvasHeight * dpr;
+  ctx.scale(dpr, dpr);
+
+  /** particles 배열을 빈배열로 생성한 뒤 반복문으로 랜덤 Particle을 생성 */
+  particles = [];
+  const TOTAL = canvasWidth / 40;
+
+  for (let i = 0; i < TOTAL; i++) {
+    const x = randomNumBetween(0, canvasWidth);
+    const y = randomNumBetween(0, canvasHeight);
+    const radius = randomNumBetween(50, 100);
+    const vy = randomNumBetween(1, 5); // 공의 떨어지는 속도가 다 다르게 하고 싶음 → 기존에 일괄적으로 ++1이던 y값을 ++(1~5 사이의)랜덤숫자로 설정하기 위한 랜덤 y값을 담는 변수
+    const particle = new Particle(x, y, radius, vy);
+    particles.push(particle);
+  }
+}
 
 /** GUI Controllr 구현 - dat.gui 라이브러리 */
 const feGaussianBlur = document.querySelector("feGaussianBlur");
@@ -106,21 +125,9 @@ const radius = 50;
 const particle = new Particle(x, y, radius);
 
 /** 반복문으로 Particle 인스턴스 여러개 생성 */
-const TOTAL = 20;
 const randomNumBetween = (min, max) => {
   return Math.random() * (max - min + 1) + min;
 };
-
-let particles = [];
-
-for (let i = 0; i < TOTAL; i++) {
-  const x = randomNumBetween(0, canvasWidth);
-  const y = randomNumBetween(0, canvasHeight);
-  const radius = randomNumBetween(50, 100);
-  const vy = randomNumBetween(1, 5); // 공의 떨어지는 속도가 다 다르게 하고 싶음 → 기존에 일괄적으로 ++1이던 y값을 ++(1~5 사이의)랜덤숫자로 설정하기 위한 랜덤 y값을 담는 변수
-  const particle = new Particle(x, y, radius, vy);
-  particles.push(particle);
-}
 
 let interval = 1000 / 60; // 목표 interval 시간 설정 → 1s === 1000ms, 60fps === 60 frame/s
 let now, delta;
@@ -157,5 +164,16 @@ function animate() {
   });
 }
 
-/** 애니메이션 함수 실행 */
-animate();
+// 💡 window의 load 이벤트가 발생할 때마다
+window.addEventListener("load", () => {
+  /** init 함수 실행 */
+  init();
+  /** 애니메이션 함수 실행 */
+  animate();
+});
+
+// 💡 window의 resize 이벤트가 발생할 때마다
+window.addEventListener("resize", () => {
+  /** init 함수 실행 */
+  init();
+});
