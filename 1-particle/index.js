@@ -21,8 +21,47 @@ canvas.width = canvasWidth * dpr;
 canvas.height = canvasHeight * dpr;
 ctx.scale(dpr, dpr);
 
-/** 원 그리기 - 각도는 degree가 아닌 radian */
+/** GUI Controllr 구현 - dat.gui 라이브러리 */
+const feGaussianBlur = document.querySelector("feGaussianBlur");
+const feColorMatrix = document.querySelector("feColorMatrix");
 
+const controls = new (function () {
+  this.blurValue = 40;
+  this.alphaChannel = 100;
+  this.alphaOffset = -23;
+
+  this.acc = 1.25;
+})();
+
+let gui = new dat.GUI();
+const f1 = gui.addFolder("🧪Gooey Effect");
+f1.open(); // 항상 열어두고 싶으면
+const f2 = gui.addFolder("🟠Particle's Props");
+f2.open();
+
+/** SVG gooey filter 🕹️GUI Controller */
+f1.add(controls, "blurValue", 0, 100).onChange((value) => {
+  feGaussianBlur.setAttribute("stdDeviation", value);
+});
+f1.add(controls, "alphaChannel", 1, 200).onChange((value) => {
+  feColorMatrix.setAttribute(
+    "values",
+    `1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 ${value} ${controls.alphaOffset}`
+  );
+});
+f1.add(controls, "alphaOffset", -40, 40).onChange((value) => {
+  feColorMatrix.setAttribute(
+    "values",
+    `1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 ${controls.alphaChannel} ${value}`
+  );
+});
+
+/** Particle's property 🕹️GUI Controller */
+f2.add(controls, "acc", 1, 1.5, "0.01").onChange((value) => {
+  particles.forEach((particle) => (particle.acc = value));
+});
+
+/** 원 그리기 - 각도는 degree가 아닌 radian */
 /** 채워진 원 */
 // ctx.beginPath(); // 그리기 시작
 // ctx.arc(100, 100, 50, 0, (Math.PI / 180) * 360);
