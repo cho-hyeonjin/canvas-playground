@@ -9,8 +9,8 @@ const ctx = canvas.getContext("2d");
 const dpr = window.devicePixelRatio;
 
 // 💡 ∴ canvas 작업을 할 때에는 stylesheet의 canavas property의 size 속성값과 canvas의 size를 동일하게 일치시켜주도록 하자!
-const canvasWidth = 300;
-const canvasHeight = 300;
+const canvasWidth = innerWidth;
+const canvasHeight = innerHeight;
 
 /** style(css)로 canvas 사이즈 변경하기 */
 canvas.style.width = canvasWidth + "px";
@@ -59,13 +59,26 @@ const y = 100;
 const radius = 50;
 const particle = new Particle(x, y, radius);
 
+let interval = 1000 / 60; // 목표 interval 시간 설정 → 1s === 1000ms, 60fps === 60 frame/s
+let now, delta;
+let then = Date.now();
+
 /** 애니메이션 함수 정의 */
 function animate() {
-  window.requestAnimationFrame(animate); // 매 프레임마다
+  window.requestAnimationFrame(animate); // 매 프레임마다 실행되는 함수이지만, 컴퓨터 사양에 따라 초당 프레임 횟수(fps)가 달라진다. 일반 컴퓨터의 경우 주사율이 60hz이고, 초당 60프레임이 실행되지만, 게이밍 노트북과 같이 그래픽 성능이 좋은 컴퓨터의 경우 주사율이 높아 초당 144프레임 이상이 렌더링 될 수도 있다. ∴ 기기(환경)에 따라 이 함수가 호출되는 횟수가 달라지게 된다. ∴ 컴퓨터 사양과 관계 없이 동일한 fps를 설정해주어야 한다.
+  now = Date.now();
+  delta = now - then;
+
+  if (delta < interval) return;
 
   ctx.clearRect(0, 0, canvasWidth, canvasHeight); // 이전 도형이 지워지고
 
-  particle.draw(); // 위치가 변경되 도형이 새로 그려지는 방식
+  // particle.y를 1씩 증가시켜서 다시 그리기.
+  particle.y += 1;
+  particle.draw();
+
+  then = now - (delta % interval);
 }
+
 /** 애니메이션 함수 실행 */
 animate();
