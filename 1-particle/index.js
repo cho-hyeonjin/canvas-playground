@@ -3,6 +3,9 @@ const canvas = document.querySelector("canvas");
 const ctx = canvas.getContext("2d");
 console.log(ctx.canvas);
 
+/** Device Pixels Ratio - 하나의 css pixel을 그릴 때 사용되는 기기의 픽셀 수 - 높을수록 선명 */
+const dpr = window.devicePixelRatio;
+
 // 💡 ∴ canvas 작업을 할 때에는 stylesheet의 canavas property의 size 속성값과 canvas의 size를 동일하게 일치시켜주도록 하자!
 const canvasWidth = 300;
 const canvasHeight = 300;
@@ -16,8 +19,9 @@ canvas.style.height = canvasHeight + "px";
 /** canvas의 자체 속성 canvas.width와 canvas.heitght로 canvas 사이즈 변경하기 */
 // canvas.width = 300;
 // canvas.height = 300; // 이 작업 안 해주면 아래 ctx.fillRect로 만든 사각형이 세로로 긴 직사각형이 됨. (style(css)로 height를 늘려줬으니까)
-canvas.width = canvasWidth;
-canvas.height = canvasHeight;
+canvas.width = canvasWidth * dpr;
+canvas.height = canvasHeight * dpr;
+ctx.scale(dpr, dpr);
 
 /** canvas의 사이즈가 css로 지정한 canvas의 사이즈보다 작을 때 - ctx.fillRect로 만든 사각형의 화질이 떨어지게 됨. (canvas의 크기가 100, 100인데 style에서 설정한 canvas는 300, 300이니까 300에 맞춰서 1픽셀의 크기가 넓어진 것!) */
 // canvas.width = 100;
