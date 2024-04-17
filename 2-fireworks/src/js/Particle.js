@@ -1,7 +1,7 @@
 import CanvasOption from "./CanvasOption.js";
 
 export default class Particle extends CanvasOption {
-  constructor(x, y, vx, vy, opacity) {
+  constructor(x, y, vx, vy, opacity, color) {
     super();
     this.x = x;
     this.y = y;
@@ -13,6 +13,9 @@ export default class Particle extends CanvasOption {
     this.gravity = 0.12;
     /** 마찰력 */
     this.friction = 0.93;
+
+    /** Tail과 같은 색상 */
+    this.color = color;
   }
 
   /** 앞으로 Particle 다룰 때 항상 기본적으로 사용해야하는 메서드 정의하기 */
