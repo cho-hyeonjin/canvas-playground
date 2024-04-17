@@ -29,6 +29,9 @@ class Canvas extends CanvasOption {
     const x = randomNumBetween(0, this.canvasWidth);
     const y = randomNumBetween(0, this.canvasHeight);
     for (let i = 0; i < PARTICLE_NUM; i++) {
+      // randomNumBetween의 파라미터로 (고정된 x좌표값, 고정된 y좌표값)이 아닌
+      // (𝛳 각도에 따라 변동되는 x좌표값, 𝛳 각도에 따라 변동되는 y좌표값)을 넣어준다!
+      // 𝛳 각도는 360도를 호도법(radian)으로 표현한다.
       const vx = randomNumBetween(-5, 5);
       const vy = randomNumBetween(-5, 5);
       this.particles.push(new Particle(x, y, vx, vy));
