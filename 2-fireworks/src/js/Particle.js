@@ -26,7 +26,7 @@ export default class Particle extends CanvasOption {
   draw() {
     this.ctx.fillStyle = `rgba(255, 255, 255, ${this.opacity})`;
     this.ctx.beginPath(); // canvas 2D context야~ 나 선 그린다~
-    this.ctx.arc(this.x, this.y, 10, 0, Math.PI * 2);
+    this.ctx.arc(this.x, this.y, 2, 0, Math.PI * 2);
     this.ctx.fill();
     this.ctx.closePath(); // 헤이 canvas 2D context~ 다 그렸다~
   }
