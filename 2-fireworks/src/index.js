@@ -1,6 +1,6 @@
 import CanvasOption from "./js/CanvasOption.js";
 import Particle from "./js/Particle.js";
-import { randomNumBetween } from "./js/utils.js";
+import { hypotenuse, randomNumBetween } from "./js/utils.js";
 
 class Canvas extends CanvasOption {
   constructor() {
@@ -32,11 +32,13 @@ class Canvas extends CanvasOption {
       // randomNumBetween의 파라미터로 (고정된 x좌표값, 고정된 y좌표값)이 아닌
       // (𝛳각도에 따라 변동되는 x좌표값, 𝛳 각도에 따라 변동되는 y좌표값)을 넣어준다!
       // 𝛳각도는 360도를 호도법(radian)으로 표현한다.
-      const r = randomNumBetween(0, 3); // 임의로 정한 범위
-      const angle = (randomNumBetween(0, 360) * Math.PI) / 180; // 𝛳각도 호도법 표현
-      const vx = Math.cos(angle) * r; // x좌표값 = cos𝛳 * r
-      const vy = Math.sin(angle) * r; // y좌표값 = sin𝛳 * r
-      this.particles.push(new Particle(x, y, vx, vy));
+      const r =
+        randomNumBetween(2, 100) * hypotenuse(innerWidth, innerHeight) * 0.0001; // 화면 크기를 기준으로 랜덤하게 설정되는 r값
+      const angle = (Math.PI / 180) * randomNumBetween(0, 360); // 𝛳각도 호도법 표현
+      const vx = r * Math.cos(angle); // x좌표값 = cos𝛳 * r
+      const vy = r * Math.sin(angle); // y좌표값 = sin𝛳 * r
+      const opacity = randomNumBetween(0.6, 0.9); // opcity값 랜덤하게 생성
+      this.particles.push(new Particle(x, y, vx, vy, opacity));
     }
   }
 
@@ -50,7 +52,7 @@ class Canvas extends CanvasOption {
       delta = now - then;
 
       if (delta < this.interval) return;
-      this.ctx.fillStyle = this.bgColor;
+      this.ctx.fillStyle = this.bgColor + "40"; // # 00000040 - alpha값 조절, 검정색이 되기까지 잔상이 남는 듯 보여지게 됨. 리얼함을 위해 잔상효과 반영
       this.ctx.fillRect(0, 0, this.canvasWidth, this.canvasHeight);
 
       /** Particle class 내장 함수로 particle 생성 */
