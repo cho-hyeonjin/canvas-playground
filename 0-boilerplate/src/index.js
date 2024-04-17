@@ -1,41 +1,48 @@
-const canvas = document.querySelector("canvas");
-const ctx = canvas.getContext("2d");
-const dpr = window.devicePixelRatio;
-const fps = 60;
-const interval = 1000 / fps;
-let now, delta;
-let then = Date.now();
+import CanvasOption from "./js/CanvasOption.js";
 
-let canvasWidth, canvasHeight;
+class Canvas extends CanvasOption {
+  constructor() {
+    super();
+  }
+  init() {
+    /** canvas size (2개의 옵션 조절) */
+    this.canvasWidth = innerWidth;
+    this.canvasHeight = innerHeight;
+    this.canvas.width = this.canvasWidth * this.dpr; // dpr = device pixel ratio → css : 1px = device : Npx
+    this.canvas.height = this.canvasHeight * this.dpr;
+    this.ctx.scale(this.dpr, this.dpr); // ctx = canvas get context
 
-function init() {
-  canvasWidth = innerWidth;
-  canvasHeight = innerHeight;
+    this.canvas.style.width = this.canvasWidth + "px";
+    this.canvas.style.height = this.canvasHeight + "px";
+  }
 
-  canvas.width = canvasWidth * dpr;
-  canvas.height = canvasHeight * dpr;
-  ctx.scale(dpr, dpr);
+  render() {
+    let now, delta;
+    let then = Date.now();
 
-  canvas.style.width = canvasWidth + "px";
-  canvas.style.height = canvasHeight + "px";
+    const frame = () => {
+      requestAnimationFrame(frame);
+      now = Date.now();
+      delta = now - then;
+
+      if (delta < this.interval) return;
+
+      this.ctx.fillRect(100, 100, 200, 200);
+
+      then = now - (delta % this.interval);
+    };
+    /** initial execute */
+    requestAnimationFrame(frame);
+  }
 }
 
-function render() {
-  requestAnimationFrame(render);
-
-  now = Date.now();
-  delta = now - then;
-  if (delta < interval) return;
-
-  ctx.fillRect(100, 100, 200, 200);
-
-  then = now - (delta % interval);
-}
+const canvas = new Canvas();
 
 window.addEventListener("load", () => {
-  init(), render();
+  canvas.init();
+  canvas.render();
 });
 
 window.addEventListener("resize", () => {
-  init();
+  canvas.init();
 });
