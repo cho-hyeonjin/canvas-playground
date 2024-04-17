@@ -1,14 +1,19 @@
+/** html에서 <canvas> 요소 가져오기 */
+// 💡 <canvas는> HTML5에서 Graphic을 그리는 용도로 사용되는 요소. JS로 Graphic을 Rendering 하는 데에 사용됨!
 const canvas = document.querySelector("canvas");
 
+/** <canvas> 요소에서 2D Graphic Context 가져오기 */
+// 💡 Canvas API에서 제공하는 getContext() 메서드는 <canvas> 요소에 대해 특정 그리기 Context를 반환한다.
 const ctx = canvas.getContext("2d");
-// 💡 canvas의 size를 다루는 방식은 2가지인데, 이 2가지를 함께 다뤄줘야 한다.
-//   1. css에서 canvas 선택자로 조절하는 방식
-//   2. canvas 객체에 내장된 canvas.width와 canvas.height 속성값을 조절하는 방식. (default: 300px, 150px)
 
-/** Device Pixels Ratio - 하나의 css pixel을 그릴 때 사용되는 기기의 픽셀 수 - 높을수록 선명 */
+/** <canvas> 의 size를 다루는 방식은 2가지인데, 이 2가지를 함께 다뤄줘야 한다. */
+//  1. CSS에서 canvas 선택자로 조절하는 방식
+//  2. <canvas> 객체에 내장된 canvas.width와 canvas.height 속성값을 조절하는 방식. (default: 300px, 150px)
+
+// 💡 DPR === Device Pixels Ratio - 하나의 css pixel을 그릴 때 사용되는 기기의 픽셀 수 - 높을수록 선명
 const dpr = window.devicePixelRatio;
 
-// 💡 ∴ canvas 작업을 할 때에는 stylesheet의 canavas property의 size 속성값과 canvas의 size를 동일하게 일치시켜주도록 하자!
+// 💡 ∴ canvas 작업을 할 때에는 CSS 'canavas' 필드의 'size' 속성값과 <canvas>의 size 값을 통일시켜 주도록 하자!
 let canvasWidth;
 let canvasHeight;
 let particles;
@@ -17,16 +22,16 @@ function init() {
   canvasWidth = innerWidth;
   canvasHeight = innerHeight;
 
-  /** style(css)로 canvas 사이즈 변경하기 */
+  /** style(css)로 <canvas> size 변경하기 */
   canvas.style.width = canvasWidth + "px";
   canvas.style.height = canvasHeight + "px";
 
-  /** canvas의 자체 속성 canvas.width와 canvas.heitght로 canvas 사이즈 변경하기 */
+  /** <canvas>의 자체 속성(canvas.width와 canvas.heitght)으로 <canvas> size 변경하기 */
   canvas.width = canvasWidth * dpr;
   canvas.height = canvasHeight * dpr;
-  ctx.scale(dpr, dpr);
+  ctx.scale(dpr, dpr); // <canvas> Context 객체의 scale 좌표값
 
-  /** particles 배열을 빈배열로 생성한 뒤 반복문으로 랜덤 Particle을 생성 */
+  /** particles 배열을 빈배열로 생성한 뒤 반복문으로 랜덤하게 particle 생성 */
   particles = [];
   const TOTAL = canvasWidth / 40;
 
@@ -34,7 +39,7 @@ function init() {
     const x = randomNumBetween(0, canvasWidth);
     const y = randomNumBetween(0, canvasHeight);
     const radius = randomNumBetween(50, 100);
-    const vy = randomNumBetween(1, 5); // 공의 떨어지는 속도가 다 다르게 하고 싶음 → 기존에 일괄적으로 ++1이던 y값을 ++(1~5 사이의)랜덤숫자로 설정하기 위한 랜덤 y값을 담는 변수
+    const vy = randomNumBetween(1, 5); // 공의 떨어지는 속도를 파티클마다 다 다르게 하고 싶음 → 기존에 일괄적으로 ++1이던 y값을 ++(1~5 사이의) 랜덤하게 설정하는데에 쓰일 랜덤값을 담는 변수
     const particle = new Particle(x, y, radius, vy);
     particles.push(particle);
   }
