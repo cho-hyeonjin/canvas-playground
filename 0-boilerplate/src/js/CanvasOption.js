@@ -5,7 +5,7 @@ export default class CanvasOption {
     this.dpr = devicePixelRatio;
     this.fps = 60;
     this.interval = 1000 / this.fps;
-    this.canavsWidth = innerWidth;
+    this.canvasWidth = innerWidth;
     this.canvasHeight = innerHeight;
   }
 }
