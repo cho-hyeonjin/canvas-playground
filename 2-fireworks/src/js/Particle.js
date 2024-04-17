@@ -1,16 +1,19 @@
 import CanvasOption from "./CanvasOption.js";
 
 export default class Particle extends CanvasOption {
-  constructor(x, y) {
+  constructor(x, y, vx, vy) {
     super();
     this.x = x;
     this.y = y;
+    this.vx = vx;
+    this.vy = vy;
   }
 
   /** 앞으로 Particle 다룰 때 항상 기본적으로 사용해야하는 메서드 정의하기 */
   /** Particle 클래스 내장 메서드 1 - update 메서드 */
   update() {
-    this.y += 1;
+    this.x += this.vx; // x velocity ++
+    this.y += this.vy; // y velocity ++
   }
 
   /** Particle 클래스 내장 메서드 2 - draw 메서드 */
