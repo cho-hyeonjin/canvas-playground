@@ -49,9 +49,15 @@ class Canvas extends CanvasOption {
       this.ctx.fillRect(0, 0, this.canvasWidth, this.canvasHeight);
 
       /** Particle class 내장 함수로 particle 생성 */
-      this.particles.forEach((particle) => {
+      this.particles.forEach((particle, index) => {
+        // 기존에는 particle들이 화면 밖으로 나가도 아래 두 메서드가 계속 호출됨 → 🐛 불필요한 CPU 연산으로 성능저하 야기
         particle.update();
         particle.draw();
+
+        /** 🚀 성능 개선 - 🛡️ 불필요한 CPU 연산으로 인한 성능 저하 방어 코드 추가 */
+        if (particle.opacity < 0) {
+          this.particles.splice(index, 1);
+        }
       });
 
       then = now - (delta % this.interval);
