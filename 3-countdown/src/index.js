@@ -1,48 +1,40 @@
-import CanvasOption from "./js/CanvasOption.js";
+const canvas = document.querySelector("canvas");
+const ctx = canvas.getContext("2d");
+const dpr = window.devicePixelRatio;
+let canvasWidth = innerWidth;
+let canvasHeight = innerHeight;
 
-class Canvas extends CanvasOption {
-  constructor() {
-    super();
-  }
-  init() {
-    /** canvas size (2개의 옵션 조절) */
-    this.canvasWidth = innerWidth;
-    this.canvasHeight = innerHeight;
-    this.canvas.width = this.canvasWidth * this.dpr; // dpr = device pixel ratio → css : 1px = device : Npx
-    this.canvas.height = this.canvasHeight * this.dpr;
-    this.ctx.scale(this.dpr, this.dpr); // ctx = canvas get context
+const interval = 1000 / 60;
 
-    this.canvas.style.width = this.canvasWidth + "px";
-    this.canvas.style.height = this.canvasHeight + "px";
-  }
-
-  render() {
-    let now, delta;
-    let then = Date.now();
-
-    const frame = () => {
-      requestAnimationFrame(frame);
-      now = Date.now();
-      delta = now - then;
-
-      if (delta < this.interval) return;
-
-      this.ctx.fillRect(100, 100, 200, 200);
-
-      then = now - (delta % this.interval);
-    };
-    /** initial execute */
-    requestAnimationFrame(frame);
-  }
+function init() {
+  canvasWidth = innerWidth;
+  canvasHeight = innerHeight;
+  canvas.style.width = canvasWidth + "px";
+  canvas.style.height = canvasHeight + "px";
+  canvas.width = canvasWidth * dpr;
+  canvas.height = canvasHeight * dpr;
+  ctx.scale(dpr, dpr);
 }
 
-const canvas = new Canvas();
+function render() {
+  let now, delta;
+  let then = Date.now(0);
+
+  const frame = () => {
+    requestAnimationFrame(frame);
+    now = Date.now();
+    delta = now - then;
+    if (delta < interval) return;
+
+    then = now - (delta % interval);
+  };
+
+  requestAnimationFrame(frame);
+}
 
 window.addEventListener("load", () => {
-  canvas.init();
-  canvas.render();
+  init();
+  render();
 });
 
-window.addEventListener("resize", () => {
-  canvas.init();
-});
+window.addEventListener("resize", init);
