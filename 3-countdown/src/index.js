@@ -21,7 +21,7 @@ function init() {
 }
 
 function createRing() {
-  const PARTICLE_NUM = 1;
+  const PARTICLE_NUM = 20;
   for (let i = 0; i < PARTICLE_NUM; i++) {
     particles.push(new Particle());
   }

@@ -1,7 +1,12 @@
+import { randomNumBetween } from "./utils.js";
+
 export default class Particle {
   constructor() {
-    this.x = innerWidth / 2;
-    this.y = innerHeight / 2;
+    this.r = innerHeight / 4;
+    this.angle = randomNumBetween(0, 360);
+
+    this.x = innerWidth / 2 + this.r * Math.cos((Math.PI / 180) * this.angle);
+    this.y = innerHeight / 2 + this.r * Math.sin((Math.PI / 180) * this.angle);
   }
 
   update() {}
