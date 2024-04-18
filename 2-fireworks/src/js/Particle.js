@@ -1,7 +1,7 @@
 import CanvasOption from "./CanvasOption.js";
 
 export default class Particle extends CanvasOption {
-  constructor(x, y, vx, vy, opacity, color) {
+  constructor(x, y, vx, vy, opacity, colorDeg) {
     super();
     this.x = x;
     this.y = y;
@@ -15,7 +15,7 @@ export default class Particle extends CanvasOption {
     this.friction = 0.93;
 
     /** Tail과 같은 색상 */
-    this.color = color;
+    this.colorDeg = colorDeg;
   }
 
   /** 앞으로 Particle 다룰 때 항상 기본적으로 사용해야하는 메서드 정의하기 */
@@ -37,7 +37,7 @@ export default class Particle extends CanvasOption {
 
   /** Particle 클래스 내장 메서드 2 - draw 메서드 */
   draw() {
-    this.ctx.fillStyle = `rgba(255, 255, 255, ${this.opacity})`;
+    this.ctx.fillStyle = `hsla(${this.colorDeg}, 100%, 65%, ${this.opacity})`;
     this.ctx.beginPath(); // canvas 2D context야~ 나 선 그린다~
     this.ctx.arc(this.x, this.y, 2, 0, Math.PI * 2);
     this.ctx.fill();
