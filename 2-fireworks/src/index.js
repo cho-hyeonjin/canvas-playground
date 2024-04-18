@@ -69,6 +69,12 @@ class Canvas extends CanvasOption {
       this.ctx.fillStyle = this.bgColor + "40"; // # 00000040 - alpha값 조절, 검정색이 되기까지 잔상이 남는 듯 보여지게 됨. 리얼함을 위해 잔상효과 반영
       this.ctx.fillRect(0, 0, this.canvasWidth, this.canvasHeight);
 
+      /** Particle 생성될 때 (폭죽 터질 때) 주변이 밝아지는 효과 적용 */
+      this.ctx.fillStyle = `rgba(255, 255, 255, ${
+        this.particles.length / 55000
+      })`;
+      this.ctx.fillRect(0, 0, this.canvasWidth, this.canvasHeight);
+
       /** Tail 생성 함수 실행 - Tail 생성 */
       // this.createTail();
       /** Tail 생성 함수 실행 - 랜덤하게 설정된 주기로 Tail 생성 (requestAnimationFrame은 매 프레임마다 실행되는 함수이고, 기기별 FPS에 따라 초당 60번 이상 실행되는 것이 보통이기 때문에 매 프레임마다 꼬리가 생성되면 폭죽 쏘아올리는 느낌이 아니라 위로 흐르는 빛 스트림처럼 보이게 되기 때문) */
