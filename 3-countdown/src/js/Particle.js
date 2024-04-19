@@ -23,11 +23,11 @@ export default class Particle {
     this.x = innerWidth / 2 + this.r * Math.cos((Math.PI / 180) * this.angle);
     this.y = innerHeight / 2 + this.r * Math.sin((Math.PI / 180) * this.angle);
 
-    this.opacity -= 0.003;
+    this.opacity -= 0.008;
   }
   draw(ctx) {
     ctx.beginPath();
-    ctx.arc(this.x, this.y, 4, 0, Math.PI * 2);
+    ctx.arc(this.x, this.y, 1, 0, Math.PI * 2);
     ctx.fillStyle = `rgba(255, 255, 255, ${this.opacity})`;
     ctx.fill();
     ctx.closePath();
