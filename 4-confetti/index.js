@@ -19,16 +19,29 @@ function render() {
   let now, delta;
   let then = Date.now();
 
+  /** confetti fragment option */
+  const x = innerWidth / 2;
+  const y = innerHeight / 2;
+  let widthAlpha = 0;
+  const width = 50;
+  const height = 50;
+
   const frame = () => {
     requestAnimationFrame(frame);
     now = Date.now();
     delta = now - then;
-    if (delta < interval) {
-      return;
-    }
+    if (delta < interval) return;
+    ctx.clearRect(0, 0, canvasWidth, canvasHeight);
+
+    widthAlpha += 0.1;
 
     ctx.fillStyle = "yellow";
-    ctx.fillRect(200, 200, 50, 50);
+    ctx.fillRect(
+      x,
+      y,
+      width * Math.cos(widthAlpha), // cos과 sin 그래프 모두 2π(360도) 주기를 가지며, -1~1 범위 내에서 반복된다.
+      height * Math.sin(widthAlpha) // 그래서 이렇게 width와 height 값에 sig과 cos값을 곱해주기만 해도 좌우, 상하로 팔랑이는 도형을 만들 수 있다.
+    );
 
     then = now - (delta % interval);
   };
