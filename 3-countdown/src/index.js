@@ -21,7 +21,7 @@ function init() {
 }
 
 function createRing() {
-  const PARTICLE_NUM = 20;
+  const PARTICLE_NUM = 200;
   for (let i = 0; i < PARTICLE_NUM; i++) {
     particles.push(new Particle());
   }
@@ -36,6 +36,8 @@ function render() {
     now = Date.now();
     delta = now - then;
     if (delta < interval) return;
+
+    ctx.clearRect(0, 0, canvasWidth, canvasHeight);
 
     particles.forEach((particle, index) => {
       particle.update();
