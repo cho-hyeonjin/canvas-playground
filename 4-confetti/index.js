@@ -20,11 +20,12 @@ function render() {
   let then = Date.now();
 
   /** confetti fragment option */
-  const x = innerWidth / 2;
-  const y = innerHeight / 2;
+  const x = canvas.width / 2;
+  let y = canvas.height / 2;
   let widthAlpha = 0;
   const width = 50;
   const height = 50;
+  let deg = 0.1;
 
   const frame = () => {
     requestAnimationFrame(frame);
@@ -32,9 +33,16 @@ function render() {
     delta = now - then;
     if (delta < interval) return;
 
-    ctx.clearRect(0, 0, canvasWidth, canvasHeight);
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
 
     widthAlpha += 0.1;
+    deg += 0.1;
+    y += 1;
+
+    /** 1frame당 ctx 중심 x,y로 옮겨가서 (설정해둔 rotate 단위값) 만큼 ctx 회전시키고, ctx 중심 다시 원위치 (ctx.rotate값은 매frame마다 ++, 초기화 X BUT translate값은 매번 초기화 후 재설정하기 때문에 매 frame마다 x, y값) */
+    ctx.translate(x + width, y + height);
+    ctx.rotate(deg);
+    ctx.translate(-x - width, -y - height);
 
     ctx.fillStyle = "yellow";
     ctx.fillRect(
@@ -42,7 +50,12 @@ function render() {
       y,
       width * Math.cos(widthAlpha), // cos과 sin 그래프 모두 2π(360도) 주기를 가지며, -1~1 범위 내에서 반복된다.
       height * Math.sin(widthAlpha) // 그래서 이렇게 width와 height 값에 sig과 cos값을 곱해주기만 해도 좌우, 상하로 팔랑이는 도형을 만들 수 있다.
+      // width,
+      // height
     );
+
+    /** 그리기 끝난 후 rotate값도 원상복구 */
+    ctx.resetTransform();
 
     then = now - (delta % interval);
   };
