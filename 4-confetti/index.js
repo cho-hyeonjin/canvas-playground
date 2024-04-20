@@ -31,6 +31,7 @@ function render() {
     now = Date.now();
     delta = now - then;
     if (delta < interval) return;
+
     ctx.clearRect(0, 0, canvasWidth, canvasHeight);
 
     widthAlpha += 0.1;
@@ -53,6 +54,4 @@ window.addEventListener("load", () => {
   render();
 });
 
-window.addEventListener("resize", () => {
-  init;
-});
+window.addEventListener("resize", () => init);
