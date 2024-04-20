@@ -18,6 +18,9 @@ export default class Particle {
 
     // 🚀
     this.opacity = 1;
+
+    this.widthDelta = 0;
+    this.heightDelta = 0;
   }
 
   update() {
@@ -30,10 +33,18 @@ export default class Particle {
     this.y += this.vy;
 
     // 🚀
-    this.opacity -= 0.05;
+    this.opacity -= 0.005;
+
+    this.widthDelta += 2;
+    this.heightDelta += 2;
   }
   draw(ctx) {
     ctx.fillStyle = `rgba(255, 255, 0, ${this.opacity})`;
-    ctx.fillRect(this.x, this.y, this.width, this.height);
+    ctx.fillRect(
+      this.x,
+      this.y,
+      this.width * Math.cos((Math.PI / 180) * this.widthDelta),
+      this.height * Math.sin((Math.PI / 180) * this.heightDelta)
+    );
   }
 }
