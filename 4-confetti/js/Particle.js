@@ -10,11 +10,19 @@ export default class Particle {
     this.vx = this.radius * Math.cos(this.angle);
     this.vy = this.radius * Math.sin(this.angle);
 
+    this.friction = 0.97;
+    this.gravity = 0.1;
+
     this.width = 30;
     this.height = 30;
   }
 
   update() {
+    this.vy += this.gravity;
+
+    this.vx *= this.friction;
+    this.vy *= this.friction;
+
     this.x += this.vx;
     this.y += this.vy;
   }
