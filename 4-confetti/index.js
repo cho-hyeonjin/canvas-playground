@@ -2,7 +2,8 @@ import Particle from "./js/Particle.js";
 
 const canvas = document.querySelector("canvas");
 const ctx = canvas.getContext("2d");
-const dpr = window.devicePixelRatio > 1 ? 2 : 1; // 이렇게 설정한 이유: 🚀성능 --- canvas를 무조건 확대시키고 scale 하게 되면 dpr이 3 || 4인 경우 성능이 나빠진다. dpr이 2인 기기에서의 선명함으로도 충분하기 때문에 성능상 그 이상을 설정할 필요는 없어 보임
+// const dpr = window.devicePixelRatio > 1 ? 2 : 1;
+const dpr = 1;
 let canvasWidth = window.innerWidth;
 let canvasHeight = window.innerHeight;
 const interval = 1000 / 60;
@@ -19,9 +20,9 @@ function init() {
   ctx.scale(dpr, dpr);
 }
 
-function confetti({ x, y, count, deg }) {
+function confetti({ x, y, count, deg, colors }) {
   for (let i = 0; i < count; i++) {
-    particles.push(new Particle(x, y, deg));
+    particles.push(new Particle(x, y, deg, colors));
   }
 }
 
@@ -51,10 +52,19 @@ function render() {
 /** confetti 함수 실행 */
 window.addEventListener("click", () => {
   confetti({
-    x: 0,
-    y: canvasHeight / 2,
+    x: 0, // 0 ~ 1
+    y: 0.5, // 0 ~ 1
     count: 10,
     deg: -50,
+    colors: [
+      "#FF577F",
+      "#FF884B",
+      "#FFD384",
+      "#FFF9B0",
+      "#3DED97",
+      "#B9E0FD",
+      "#A374DB",
+    ],
   });
 });
 window.addEventListener("load", () => {
