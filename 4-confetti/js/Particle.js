@@ -1,8 +1,8 @@
 import { randomNumBetween } from "./utils.js";
 
 export default class Particle {
-  constructor(x, y) {
-    this.angle = (Math.PI / 180) * randomNumBetween(0, 360);
+  constructor(x, y, deg = -50) {
+    this.angle = (Math.PI / 180) * randomNumBetween(deg - 30, deg + 30);
     this.radius = 3;
     this.x = x;
     this.y = y;
