@@ -15,6 +15,9 @@ export default class Particle {
 
     this.width = 30;
     this.height = 30;
+
+    // 🚀
+    this.opacity = 1;
   }
 
   update() {
@@ -25,9 +28,12 @@ export default class Particle {
 
     this.x += this.vx;
     this.y += this.vy;
+
+    // 🚀
+    this.opacity -= 0.05;
   }
   draw(ctx) {
-    ctx.fillStyle = "yellow";
+    ctx.fillStyle = `rgba(255, 255, 0, ${this.opacity})`;
     ctx.fillRect(this.x, this.y, this.width, this.height);
   }
 }
