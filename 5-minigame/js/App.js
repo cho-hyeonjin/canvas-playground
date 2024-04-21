@@ -9,7 +9,11 @@ export default class App {
   static height = 768;
 
   constructor() {
-    this.background = new Background();
+    this.backgrounds = [
+      new Background({ img: document.querySelector("#bg3-img"), speed: -1 }),
+      new Background({ img: document.querySelector("#bg2-img"), speed: -2 }),
+      new Background({ img: document.querySelector("#bg1-img"), speed: -4 }),
+    ];
 
     window.addEventListener("resize", () => {
       this.resize.bind(this); //  bind메서드로 명시적 this 바인딩 필수! (이 작업을 해주지 않으면 this 호출주체인 window에 this가 바인딩 되니까)
@@ -39,8 +43,10 @@ export default class App {
       App.ctx.clearRect(0, 0, App.width, App.height);
       App.ctx.fillRect(50, 50, 100, 100);
 
-      this.background.update();
-      this.background.draw();
+      this.backgrounds.forEach((background) => {
+        background.update();
+        background.draw();
+      });
 
       then = now - (delta % App.interval);
     };
