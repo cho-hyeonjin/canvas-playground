@@ -23,10 +23,17 @@ export default class Wall {
     // App.height - this.gapY - this.height
     this.y1 = -this.height + randomNumBetween(30, App.height - this.gapY - 30);
     this.y2 = this.y1 + this.height + this.gapY;
+
+    this.generatedNext = false;
+    this.gapNextX = App.width * randomNumBetween(0.6, 0.75);
   }
 
   get isOutside() {
     return this.x + this.width < 0;
+  }
+
+  get canGenerateNext() {
+    return !this.generatedNext && this.x + this.width < this.gapNextX;
   }
 
   update() {
