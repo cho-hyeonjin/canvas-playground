@@ -1,4 +1,5 @@
 import App from "./App.js";
+import BoundingBox from "./BoundingBox.js";
 
 export default class Player {
   constructor() {
@@ -7,6 +8,13 @@ export default class Player {
     this.y = App.height * 0.5;
     this.width = 130;
     this.height = this.width * (96 / 140);
+
+    this.boundingBox = new BoundingBox(
+      this.x + 10,
+      this.y + 16,
+      this.width - 20,
+      this.height - 20
+    );
 
     this.counter = 0;
     this.frameX = 0;
@@ -28,6 +36,7 @@ export default class Player {
     }
     this.vy += this.gravity;
     this.y += this.vy;
+    this.boundingBox.y = this.y + 16;
   }
 
   draw() {
@@ -42,5 +51,7 @@ export default class Player {
       this.width,
       this.height
     );
+
+    this.boundingBox.draw();
   }
 }
