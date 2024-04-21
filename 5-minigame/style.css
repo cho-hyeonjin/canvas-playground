@@ -10,10 +10,6 @@ body {
   justify-content: center;
 }
 
-canvas {
-  border: solid 1px red;
-}
-
 .asset-img {
   display: none;
 }
