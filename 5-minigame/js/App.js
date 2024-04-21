@@ -1,4 +1,5 @@
 import Background from "./Background.js";
+import Player from "./Player.js";
 import Wall from "./Wall.js";
 
 export default class App {
@@ -17,6 +18,7 @@ export default class App {
     ];
 
     this.walls = [new Wall({ type: "BIG" })];
+    this.player = new Player();
 
     window.addEventListener("resize", () => {
       this.resize.bind(this); //  bind메서드로 명시적 this 바인딩 필수! (이 작업을 해주지 않으면 this 호출주체인 window에 this가 바인딩 되니까)
@@ -71,7 +73,10 @@ export default class App {
           );
         }
       }
-      console.log(this.walls.length);
+
+      /** 플레이어 관련 */
+      this.player.update();
+      this.player.draw();
 
       then = now - (delta % App.interval);
     };
