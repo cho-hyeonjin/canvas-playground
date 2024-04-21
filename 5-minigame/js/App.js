@@ -42,7 +42,7 @@ export default class App {
     const frame = () => {
       requestAnimationFrame(frame);
       now = Date.now();
-      delta = now - delta;
+      delta = now - then;
       if (delta < App.interval) return;
 
       App.ctx.clearRect(0, 0, App.width, App.height);

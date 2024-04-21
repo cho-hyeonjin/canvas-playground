@@ -10,6 +10,12 @@ export default class Player {
 
     this.counter = 0;
     this.frameX = 0;
+
+    this.vy = -10;
+    this.gravity = 0.2;
+    App.canvas.addEventListener("click", () => {
+      this.vy += -5;
+    });
   }
 
   update() {
@@ -20,6 +26,8 @@ export default class Player {
     if (this.counter % 2 === 0) {
       this.frameX = ++this.frameX % 15;
     }
+    this.vy += this.gravity;
+    this.y += this.vy;
   }
 
   draw() {
