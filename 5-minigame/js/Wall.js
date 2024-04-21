@@ -1,4 +1,5 @@
 import App from "./App.js";
+import { randomNumBetween } from "./util.js";
 
 export default class Wall {
   constructor(config) {
@@ -16,9 +17,21 @@ export default class Wall {
     }
     this.width = App.height * this.sizeX;
     this.height = App.height;
+    this.gapY = randomNumBetween(App.height * 0.15, App.height * 0.35);
+    this.x = App.width;
+    // -this.height
+    // App.height - this.gapY - this.height
+    this.y1 = -this.height + randomNumBetween(30, App.height - this.gapY - 30);
+    this.y2 = this.y1 + this.height + this.gapY;
   }
 
-  update() {}
+  get isOutside() {
+    return this.x + this.width < 0;
+  }
+
+  update() {
+    this.x += -6;
+  }
 
   draw() {
     App.ctx.drawImage(
@@ -29,8 +42,21 @@ export default class Wall {
       this.img.width * this.sizeX, // sw
       this.img.height, // sh
       // BIG 사이즈
-      0,
-      0,
+      this.x,
+      this.y1,
+      this.width,
+      this.height
+    );
+    App.ctx.drawImage(
+      this.img,
+      // SMALL 사이즈
+      this.sx, // sx
+      0, // sy
+      this.img.width * this.sizeX, // sw
+      this.img.height, // sh
+      // BIG 사이즈
+      this.x,
+      this.y2,
       this.width,
       this.height
     );

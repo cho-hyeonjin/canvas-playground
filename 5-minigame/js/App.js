@@ -51,10 +51,12 @@ export default class App {
         background.draw();
       });
 
-      this.walls.forEach((wall) => {
-        wall.update();
-        wall.draw();
-      });
+      for (let i = this.walls.length - 1; i >= 0; i--) {
+        this.walls[i].update();
+        this.walls[i].draw();
+
+        if (this.walls.isOutside) this.walls.splice(i, 1);
+      }
 
       then = now - (delta % App.interval);
     };
